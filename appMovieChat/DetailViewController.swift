@@ -31,11 +31,19 @@ class DetailViewController : UIViewController {
                 self.wv.load(req)
             }
             else {
+                let alert = UIAlertController(title: "오류", message: "잘못된 URL 입니다", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "확인", style: .cancel) {(_) in _ = self.navigationController?.popViewController(animated: true)}
                 
+                alert.addAction(cancelAction)
+                self.present(alert, animated: true, completion: nil)
             }
         }
         else {
+            let alert = UIAlertController(title: "오류", message: "필수 파라미터가 누락되었습니다", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "확인", style: .cancel) {(_) in _ = self.navigationController?.popViewController(animated: true)}
             
+            alert.addAction(cancelAction)
+            self.present(alert, animated: false, completion: nil)
         }
     }
 }
@@ -58,4 +66,14 @@ extension DetailViewController : WKNavigationDelegate {
     }
 }
 
+extension UIViewController {
+    func alert(_ message : String, onClik : (() -> Void)? = nil) {
+        let controller = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "OK", style: .cancel) {(_) in onClik?() })
+        
+        DispatchQueue.main.async {
+            self.present(controller, animated: false)
+        }
+    }
+}
 
