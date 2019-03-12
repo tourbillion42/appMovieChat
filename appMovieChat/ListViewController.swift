@@ -21,7 +21,7 @@ class ListViewController : UITableViewController {
     }()
     
     override func viewDidLoad() {
-     
+        self.cellMovieAPI()
     }
     
     @IBAction func more(_ sender: Any) {
@@ -29,6 +29,13 @@ class ListViewController : UITableViewController {
     }
     
     func cellMovieAPI() {
+        
+        let url = "http://swiftapi.rubypaper.co.kr:2029/hoppin/movies?version=1&page=1&count=30&genreId=&order=releasedateasc"
+        let apiURL : URL! = URL(string: url)
+        let apiData = try! Data(contentsOf: apiURL)
+        
+        let log = NSString(data: apiData, encoding: String.Encoding.utf8.rawValue) ?? ""
+        NSLog("API Result = \(log)")
         
     }
     
