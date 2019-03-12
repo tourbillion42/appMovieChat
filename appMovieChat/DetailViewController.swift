@@ -24,6 +24,19 @@ class DetailViewController : UIViewController {
         
         let naviBar = self.navigationItem
         naviBar.title = self.mvo.title
+        
+        if let url = self.mvo?.detail {
+            if let urlObj = URL(string: url) {
+                let req = URLRequest(url: urlObj)
+                self.wv.load(req)
+            }
+            else {
+                
+            }
+        }
+        else {
+            
+        }
     }
 }
 
