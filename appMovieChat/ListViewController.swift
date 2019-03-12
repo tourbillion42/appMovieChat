@@ -12,11 +12,44 @@ class ListViewController : UITableViewController {
 
     @IBOutlet var moreBtn: UIButton!
     
+    var page = 1
+    
+    lazy var list : [MovieVO] = {
+        var dataList = [MovieVO]()
+        
+        return dataList
+    }()
+    
     override func viewDidLoad() {
      
     }
     
     @IBAction func more(_ sender: Any) {
     
+    }
+    
+    func cellMovieAPI() {
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.list.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let row = self.list[indexPath.row]
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ListCell") as! MovieCell
+        
+        cell.title?.text = row.title
+        cell.desc?.text = row.description
+        cell.opendate?.text = row.opendate
+        cell.rating?.text = "\(row.rating!)"
+        
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        NSLog("\(indexPath.row)")
     }
 }
