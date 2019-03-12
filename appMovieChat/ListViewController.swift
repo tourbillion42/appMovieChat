@@ -26,6 +26,11 @@ class ListViewController : UITableViewController {
     
     @IBAction func more(_ sender: Any) {
         
+        self.page += 1
+        
+        self.cellMovieAPI()
+        
+        self.tableView.reloadData()
     }
     
     func cellMovieAPI() {
@@ -53,8 +58,14 @@ class ListViewController : UITableViewController {
                 mvo.thumbnail = r["thumbnailImage"] as? String
                 mvo.rating = (r["ratingAverage"] as! NSString).doubleValue
                 
+                let url : URL! = URL(string: mvo.thumbnail!)
+                let imageURL = try! Data(contentsOf: url)
+                
+                mvo.thumbnailImage = UIImage(data: imageURL)
+                
                 self.list.append(mvo)
             }
+            self.tableView.reloadData()
             
             let totalCount = (hoppin["totalCount"] as? NSString)!.integerValue
             
@@ -81,10 +92,31 @@ class ListViewController : UITableViewController {
         cell.opendate?.text = row.opendate
         cell.rating?.text = "\(row.rating!)"
         
+        DispatchQueue.main.async(execute: {
+            cell.thumbnail.image = self.getThumbnaiImage(indexPath.row)
+        })
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog("\(indexPath.row)")
+    }
+    
+    func getThumbnaiImage(_ index : Int) -> UIImage {
+        
+        let mvo = self.list[index]
+        
+        if let savedImage = mvo.thumbnailImage {
+            return savedImage
+        }
+        else {
+            let url : URL! = URL(string: mvo.thumbnail!)
+            let imageURL = try! Data(contentsOf: url)
+            
+            mvo.thumbnailImage = UIImage(data: imageURL)
+            
+            return mvo.thumbnailImage!
+        }
     }
 }
